@@ -4,7 +4,7 @@ import time
 import random
 pygame.font.init()
 pygame.mixer.init()
-
+pygame.mixer.music.load('beep.mp3')
 
 WIDTH, HEIGHT = 750,650
 
@@ -49,7 +49,6 @@ class Laser:
 
 class Ship:
     COOLDOWN = 30
-
     def __init__(self, x, y, health=100):
         self.x = x
         self.y = y
@@ -151,14 +150,13 @@ def collide(obj1, obj2):
     return obj1.mask.overlap(obj2.mask, (offset_x, offset_y)) != None
 
 def main():
-    pygame.mixer.music.load('beep.mp3')
     pygame.mixer.music.play()
     run = True
     FPS = 60
     level = 0
     lives = 5
     main_font = pygame.font.SysFont("Comic Sans MS", 30)
-    lost_font = pygame.font.SysFont("Comic Sans MS", 30)
+    lost_font = pygame.font.SysFont("Comic Sans MS", 40)
 
     enemies = []
     wave_length = 5
@@ -189,8 +187,10 @@ def main():
         player.draw(WIN)
 
         if lost:
-            lost_label = lost_font.render("You Lost!!", 1, (255,255,255))
+            pygame.mixer.music.stop()
+            lost_label = lost_font.render("You Lost!!", 1, (255,0,0))
             WIN.blit(lost_label, (WIDTH/2 - lost_label.get_width()/2, 350))
+
 
         pygame.display.update()
 
@@ -248,10 +248,13 @@ def main():
         player.move_lasers(-laser_vel, enemies)
 
 def main_menu():
+    pygame.mixer.music.load('beep.mp3')
+    pygame.mixer.music.play()
     title_font = pygame.font.SysFont("Comic Sans MS", 30)
     run = True
 
     while run:
+
         WIN.blit(BG, (0,0))
         title_label = title_font.render("Press the mouse to begin...", 1, (255,255,255))
         WIN.blit(title_label, (WIDTH/2 - title_label.get_width()/2, 350))
